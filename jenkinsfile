@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the application...'
+                // Add your build commands here (e.g., compiling code, packaging)
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                // Add your test commands here
+            }
+        }
+
+        stage('Run Python Script') {
+            steps {
+                echo 'Executing Python script...'
+                sh '''
+                    # Ensure the script exists
+                    if [ -f "myscript.py" ]; then
+                        python3 myscript.py
+                    else
+                        echo "Error: Python script not found!"
+                        exit 1
+                    fi
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                // Add deployment commands here
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs.'
+        }
+    }
+}
